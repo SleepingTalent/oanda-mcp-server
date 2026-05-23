@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# uv
+.uv/
+
+# Environment variables — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# pytest
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# mypy / type checkers
+.mypy_cache/
+.dmypy.json
+.pyright/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Docker
+*.env.docker
+
+# Logs
+*.log
