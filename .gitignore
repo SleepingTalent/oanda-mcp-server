@@ -23,6 +23,9 @@ env/
 .env.local
 .env.*.local
 
+# MCP server config (may contain API keys)
+.mcp.json
+
 # pytest
 .pytest_cache/
 .coverage
