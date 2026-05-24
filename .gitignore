@@ -51,3 +51,5 @@ htmlcov/
 
 # Logs
 *.log
+
+.ruff_cache/

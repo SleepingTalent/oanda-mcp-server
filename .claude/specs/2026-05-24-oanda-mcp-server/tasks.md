@@ -40,10 +40,10 @@
   - [x] 4.8 Wire all tools into FastMCP app in `src/oanda_mcp/server.py` — instantiate `FastMCP`, register all tools, configure streamable HTTP transport on `settings.mcp_port`, add `__main__` entrypoint
   - [x] 4.9 Verify all tests pass
 
-- [ ] 5. Docker packaging, test pyramid completion, and CI/CD
-  - [ ] 5.1 Write Testcontainers integration tests in `tests/integration/conftest.py` (session-scoped fixture that starts `oanda-mcp:ci` Docker image, yields base URL) and `tests/integration/test_integration.py` (call MCP tools over HTTP, assert response shapes)
-  - [ ] 5.2 Write local-only smoke test in `tests/smoke/test_smoke.py` (calls `get_account_summary` and `get_tradeable_instruments` against OANDA practice, asserts expected fields, no trading actions)
-  - [ ] 5.3 Create multi-stage `Dockerfile` (builder stage: install uv + deps; runtime stage: python:3.11-slim, non-root user, copy source, `EXPOSE ${MCP_PORT}`, `CMD ["python", "-m", "oanda_mcp.server"]`)
-  - [ ] 5.4 Create `docker-compose.yml` (single `oanda-mcp` service, build from local Dockerfile, port mapping `${MCP_PORT}:${MCP_PORT}`, env_file: .env) and `.dockerignore`
-  - [ ] 5.5 Create `.github/workflows/ci.yml` with `test` job (lint → typecheck → unit tests → build Docker image tagged `oanda-mcp:ci` → integration tests) and `publish` job (on `main` push or `v*` tag: push to Docker Hub as `latest`, version tag, and short SHA)
-  - [ ] 5.6 Verify full test pyramid passes (`uv run pytest tests/unit/ tests/integration/`) and Docker image builds successfully with `docker build`
+- [x] 5. Docker packaging, test pyramid completion, and CI/CD
+  - [x] 5.1 Write Testcontainers integration tests in `tests/integration/conftest.py` (session-scoped fixture that starts `oanda-mcp:ci` Docker image, yields base URL) and `tests/integration/test_integration.py` (call MCP tools over HTTP, assert response shapes)
+  - [x] 5.2 Write local-only smoke test in `tests/smoke/test_smoke.py` (calls `get_account_summary` and `get_tradeable_instruments` against OANDA practice, asserts expected fields, no trading actions)
+  - [x] 5.3 Create multi-stage `Dockerfile` (builder stage: install uv + deps; runtime stage: python:3.11-slim, non-root user, copy source, `EXPOSE ${MCP_PORT}`, `CMD ["python", "-m", "oanda_mcp.server"]`)
+  - [x] 5.4 Create `docker-compose.yml` (single `oanda-mcp` service, build from local Dockerfile, port mapping `${MCP_PORT}:${MCP_PORT}`, env_file: .env) and `.dockerignore`
+  - [x] 5.5 Create `.github/workflows/ci.yml` with `test` job (lint → typecheck → unit tests → build Docker image tagged `oanda-mcp:ci` → integration tests) and `publish` job (on `main` push or `v*` tag: push to Docker Hub as `latest`, version tag, and short SHA)
+  - [x] 5.6 Verify full test pyramid passes (`uv run pytest tests/unit/ tests/integration/`) and Docker image builds successfully with `docker build`
