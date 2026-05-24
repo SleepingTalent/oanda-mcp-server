@@ -13,12 +13,12 @@
   - [x] 1.5 Create `.env.example`, configure ruff and mypy in `pyproject.toml`, and add all taskipy commands (serve, test, smoke-test, lint, typecheck)
   - [x] 1.6 Verify all tests pass
 
-- [ ] 2. OANDA V20 async client
-  - [ ] 2.1 Write unit tests for `OandaClient` (correct Authorization header set, correct base URL selected per environment, `OandaAPIError` raised on 4xx/5xx with OANDA error code and message, 30s timeout configured)
-  - [ ] 2.2 Implement `OandaAPIError` exception class in `src/oanda_mcp/client.py` (carries status code, OANDA error code, message)
-  - [ ] 2.3 Implement `OandaClient` wrapping `httpx.AsyncClient` (constructor from `Settings`, base URL and auth header, 30s timeout)
-  - [ ] 2.4 Implement async request methods on `OandaClient`: `get`, `post`, `put` — each raises `OandaAPIError` on non-2xx responses
-  - [ ] 2.5 Verify all tests pass
+- [x] 2. OANDA V20 async client
+  - [x] 2.1 Write unit tests for `OandaClient` (correct Authorization header set, correct base URL selected per environment, `OandaAPIError` raised on 4xx/5xx with OANDA error code and message, 30s timeout configured)
+  - [x] 2.2 Implement `OandaAPIError` exception class in `src/oanda_mcp/client.py` (carries status code, OANDA error code, message)
+  - [x] 2.3 Implement `OandaClient` wrapping `httpx.AsyncClient` (constructor from `Settings`, base URL and auth header, 30s timeout)
+  - [x] 2.4 Implement async request methods on `OandaClient`: `get`, `post`, `put` — each raises `OandaAPIError` on non-2xx responses
+  - [x] 2.5 Verify all tests pass
 
 - [ ] 3. Pydantic V2 models for all domains
   - [ ] 3.1 Write unit tests for all domain models (required vs optional fields, type coercion, validation errors on bad input)
