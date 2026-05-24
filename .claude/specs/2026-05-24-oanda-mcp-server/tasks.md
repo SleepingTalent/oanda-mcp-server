@@ -5,13 +5,13 @@
 
 ## Tasks
 
-- [ ] 1. Project scaffolding and configuration
-  - [ ] 1.1 Write unit tests for `Settings` class (required field validation, environment switching, base URL selection for practice vs live, MCP_PORT default)
-  - [ ] 1.2 Initialise project with `uv init`, configure `pyproject.toml` with all runtime deps (fastmcp, httpx, pydantic, pydantic-settings) and dev deps (pytest, pytest-asyncio, testcontainers, taskipy, ruff, mypy)
-  - [ ] 1.3 Create full package directory structure: `src/oanda_mcp/`, `src/oanda_mcp/models/`, `src/oanda_mcp/tools/`, `tests/unit/tools/`, `tests/integration/`, `tests/smoke/`
-  - [ ] 1.4 Implement `Settings` class in `src/oanda_mcp/config.py` using pydantic-settings (OANDA_API_KEY, OANDA_ACCOUNT_ID, OANDA_ENVIRONMENT, MCP_PORT with defaults and validation)
-  - [ ] 1.5 Create `.env.example`, configure ruff and mypy in `pyproject.toml`, and add all taskipy commands (serve, test, smoke-test, lint, typecheck)
-  - [ ] 1.6 Verify all tests pass
+- [x] 1. Project scaffolding and configuration
+  - [x] 1.1 Write unit tests for `Settings` class (required field validation, environment switching, base URL selection for practice vs live, MCP_PORT default)
+  - [x] 1.2 Initialise project with `uv init`, configure `pyproject.toml` with all runtime deps (fastmcp, httpx, pydantic, pydantic-settings) and dev deps (pytest, pytest-asyncio, testcontainers, taskipy, ruff, mypy)
+  - [x] 1.3 Create full package directory structure: `src/oanda_mcp/`, `src/oanda_mcp/models/`, `src/oanda_mcp/tools/`, `tests/unit/tools/`, `tests/integration/`, `tests/smoke/`
+  - [x] 1.4 Implement `Settings` class in `src/oanda_mcp/config.py` using pydantic-settings (OANDA_API_KEY, OANDA_ACCOUNT_ID, OANDA_ENVIRONMENT, MCP_PORT with defaults and validation)
+  - [x] 1.5 Create `.env.example`, configure ruff and mypy in `pyproject.toml`, and add all taskipy commands (serve, test, smoke-test, lint, typecheck)
+  - [x] 1.6 Verify all tests pass
 
 - [ ] 2. OANDA V20 async client
   - [ ] 2.1 Write unit tests for `OandaClient` (correct Authorization header set, correct base URL selected per environment, `OandaAPIError` raised on 4xx/5xx with OANDA error code and message, 30s timeout configured)
