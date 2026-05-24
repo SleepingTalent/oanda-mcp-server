@@ -378,8 +378,14 @@ async def get_transaction_range(
 
 
 def main() -> None:
+    import os
+
     settings = Settings()
-    mcp.run(transport="http", host="0.0.0.0", port=settings.mcp_port)
+    transport = os.environ.get("MCP_TRANSPORT", "stdio")
+    if transport == "http":
+        mcp.run(transport="http", host="0.0.0.0", port=settings.mcp_port)
+    else:
+        mcp.run(transport="stdio")
 
 
 if __name__ == "__main__":

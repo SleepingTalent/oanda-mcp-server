@@ -7,4 +7,6 @@ services:
       - "${MCP_PORT:-8000}:${MCP_PORT:-8000}"
     env_file:
       - .env
+    environment:
+      - MCP_TRANSPORT=http
     restart: unless-stopped
