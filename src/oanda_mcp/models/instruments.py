@@ -10,7 +10,7 @@ class OHLCData(BaseModel):
 
     o: str
     h: str
-    l: str
+    l: str  # noqa: E741 — standard OHLC abbreviation for "low"
     c: str
 
 

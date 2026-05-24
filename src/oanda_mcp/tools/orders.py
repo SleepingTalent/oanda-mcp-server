@@ -1,6 +1,6 @@
 """Tool logic functions for OANDA V20 order endpoints."""
 
-from typing import Any, Union
+from typing import Any
 
 from oanda_mcp.client import OandaClient
 from oanda_mcp.models.orders import (
@@ -10,7 +10,7 @@ from oanda_mcp.models.orders import (
     StopOrderRequest,
 )
 
-OrderRequest = Union[MarketOrderRequest, LimitOrderRequest, StopOrderRequest]
+OrderRequest = MarketOrderRequest | LimitOrderRequest | StopOrderRequest
 
 
 async def create_order(

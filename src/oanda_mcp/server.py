@@ -1,16 +1,11 @@
 """FastMCP server — tool registration and HTTP transport entrypoint."""
 
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any, AsyncIterator
+from typing import Any
 
 from fastmcp import Context, FastMCP
-from fastmcp.server.lifespan import lifespan as fastmcp_lifespan
 
-from oanda_mcp.client import OandaClient
-from oanda_mcp.config import Settings
-from oanda_mcp.models.orders import LimitOrderRequest, MarketOrderRequest, StopOrderRequest
-from oanda_mcp.models.positions import ClosePositionRequest
-from oanda_mcp.models.trades import UpdateTradeOrdersRequest
 import oanda_mcp.tools.account as _account
 import oanda_mcp.tools.instruments as _instruments
 import oanda_mcp.tools.orders as _orders
@@ -18,6 +13,11 @@ import oanda_mcp.tools.positions as _positions
 import oanda_mcp.tools.pricing as _pricing
 import oanda_mcp.tools.trades as _trades
 import oanda_mcp.tools.transactions as _transactions
+from oanda_mcp.client import OandaClient
+from oanda_mcp.config import Settings
+from oanda_mcp.models.orders import LimitOrderRequest, MarketOrderRequest, StopOrderRequest
+from oanda_mcp.models.positions import ClosePositionRequest
+from oanda_mcp.models.trades import UpdateTradeOrdersRequest
 
 
 @asynccontextmanager
@@ -90,7 +90,7 @@ async def get_candles(
 ) -> list[dict[str, Any]]:
     """Return OHLCV candlestick data for an instrument.
 
-    granularity: S5, S10, S15, S30, M1, M2, M4, M5, M10, M15, M30, H1, H2, H3, H4, H6, H8, H12, D, W, M
+    granularity: S5 S10 S15 S30 M1 M2 M4 M5 M10 M15 M30 H1 H2 H3 H4 H6 H8 H12 D W M
     price: M (mid), B (bid), A (ask), BA (bid+ask)
     """
     result = await _instruments.get_candles(
@@ -225,7 +225,10 @@ async def create_stop_order(
 async def list_orders(
     ctx: Context, state: str | None = None, instrument: str | None = None
 ) -> list[dict[str, Any]]:
-    """Return pending orders, optionally filtered by state (PENDING, FILLED, CANCELLED) or instrument."""
+    """Return pending orders, optionally filtered by state or instrument.
+
+    state: PENDING, FILLED, CANCELLED
+    """
     return await _orders.list_orders(
         _client(ctx), _account_id(ctx), state=state, instrument=instrument
     )

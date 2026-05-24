@@ -1,11 +1,10 @@
 """Tests for the OandaClient and OandaAPIError."""
 
 import pytest
-import httpx
 from pytest_httpx import HTTPXMock
 
-from oanda_mcp.config import Settings
 from oanda_mcp.client import OandaAPIError, OandaClient
+from oanda_mcp.config import Settings
 
 
 @pytest.fixture
