@@ -20,14 +20,14 @@
   - [x] 2.4 Implement async request methods on `OandaClient`: `get`, `post`, `put` — each raises `OandaAPIError` on non-2xx responses
   - [x] 2.5 Verify all tests pass
 
-- [ ] 3. Pydantic V2 models for all domains
-  - [ ] 3.1 Write unit tests for all domain models (required vs optional fields, type coercion, validation errors on bad input)
-  - [ ] 3.2 Implement account models in `src/oanda_mcp/models/account.py` (AccountSummary, AccountDetails, TradeableInstrument, AccountChangesResponse)
-  - [ ] 3.3 Implement instrument and pricing models in `models/instruments.py` and `models/pricing.py` (CandleData, Candle, OrderBook, PositionBook, Price, HomeConversion)
-  - [ ] 3.4 Implement order models in `models/orders.py` (MarketOrderRequest, LimitOrderRequest, StopOrderRequest, TakeProfitDetails, StopLossDetails, TrailingStopLossDetails, OrderResponse)
-  - [ ] 3.5 Implement trade and position models in `models/trades.py` and `models/positions.py` (Trade, CloseTradeRequest, UpdateTradeOrdersRequest, Position, ClosePositionRequest)
-  - [ ] 3.6 Implement transaction models in `models/transactions.py` (Transaction, TransactionPage, TransactionRangeResponse)
-  - [ ] 3.7 Verify all tests pass
+- [x] 3. Pydantic V2 models for all domains
+  - [x] 3.1 Write unit tests for all domain models (required vs optional fields, type coercion, validation errors on bad input)
+  - [x] 3.2 Implement account models in `src/oanda_mcp/models/account.py` (AccountSummary, AccountDetails, TradeableInstrument, AccountChangesResponse)
+  - [x] 3.3 Implement instrument and pricing models in `models/instruments.py` and `models/pricing.py` (CandleData, Candle, OrderBook, PositionBook, Price, HomeConversion)
+  - [x] 3.4 Implement order models in `models/orders.py` (MarketOrderRequest, LimitOrderRequest, StopOrderRequest, TakeProfitDetails, StopLossDetails, TrailingStopLossDetails, OrderResponse)
+  - [x] 3.5 Implement trade and position models in `models/trades.py` and `models/positions.py` (Trade, CloseTradeRequest, UpdateTradeOrdersRequest, Position, ClosePositionRequest)
+  - [x] 3.6 Implement transaction models in `models/transactions.py` (Transaction, TransactionPage, TransactionRangeResponse)
+  - [x] 3.7 Verify all tests pass
 
 - [ ] 4. MCP tool suite and FastMCP server
   - [ ] 4.1 Write unit tests for all tool groups using `unittest.mock.AsyncMock` — assert correct OandaClient method and path called, inputs validated, response parsed into correct model, `OandaAPIError` propagated
