@@ -29,16 +29,16 @@
   - [x] 3.6 Implement transaction models in `models/transactions.py` (Transaction, TransactionPage, TransactionRangeResponse)
   - [x] 3.7 Verify all tests pass
 
-- [ ] 4. MCP tool suite and FastMCP server
-  - [ ] 4.1 Write unit tests for all tool groups using `unittest.mock.AsyncMock` — assert correct OandaClient method and path called, inputs validated, response parsed into correct model, `OandaAPIError` propagated
-  - [ ] 4.2 Implement account tools in `src/oanda_mcp/tools/account.py` (`get_account_summary`, `get_account_details`, `get_tradeable_instruments`, `get_account_changes`)
-  - [ ] 4.3 Implement instrument and pricing tools in `tools/instruments.py` and `tools/pricing.py` (`get_candles`, `get_order_book`, `get_position_book`, `get_prices`, `get_home_conversions`)
-  - [ ] 4.4 Implement order tools in `tools/orders.py` (`create_order` supporting Market/Limit/Stop with optional TP/SL/trailing stop, `list_orders`, `get_order`, `cancel_order`, `replace_order`)
-  - [ ] 4.5 Implement trade tools in `tools/trades.py` (`list_trades`, `get_trade`, `close_trade`, `update_trade_orders`)
-  - [ ] 4.6 Implement position tools in `tools/positions.py` (`list_positions`, `list_open_positions`, `get_position`, `close_position`)
-  - [ ] 4.7 Implement transaction tools in `tools/transactions.py` (`list_transactions`, `get_transaction`, `get_transaction_range`)
-  - [ ] 4.8 Wire all tools into FastMCP app in `src/oanda_mcp/server.py` — instantiate `FastMCP`, register all tools, configure streamable HTTP transport on `settings.mcp_port`, add `__main__` entrypoint
-  - [ ] 4.9 Verify all tests pass
+- [x] 4. MCP tool suite and FastMCP server
+  - [x] 4.1 Write unit tests for all tool groups using `unittest.mock.AsyncMock` — assert correct OandaClient method and path called, inputs validated, response parsed into correct model, `OandaAPIError` propagated
+  - [x] 4.2 Implement account tools in `src/oanda_mcp/tools/account.py` (`get_account_summary`, `get_account_details`, `get_tradeable_instruments`, `get_account_changes`)
+  - [x] 4.3 Implement instrument and pricing tools in `tools/instruments.py` and `tools/pricing.py` (`get_candles`, `get_order_book`, `get_position_book`, `get_prices`, `get_home_conversions`)
+  - [x] 4.4 Implement order tools in `tools/orders.py` (`create_order` supporting Market/Limit/Stop with optional TP/SL/trailing stop, `list_orders`, `get_order`, `cancel_order`, `replace_order`)
+  - [x] 4.5 Implement trade tools in `tools/trades.py` (`list_trades`, `get_trade`, `close_trade`, `update_trade_orders`)
+  - [x] 4.6 Implement position tools in `tools/positions.py` (`list_positions`, `list_open_positions`, `get_position`, `close_position`)
+  - [x] 4.7 Implement transaction tools in `tools/transactions.py` (`list_transactions`, `get_transaction`, `get_transaction_range`)
+  - [x] 4.8 Wire all tools into FastMCP app in `src/oanda_mcp/server.py` — instantiate `FastMCP`, register all tools, configure streamable HTTP transport on `settings.mcp_port`, add `__main__` entrypoint
+  - [x] 4.9 Verify all tests pass
 
 - [ ] 5. Docker packaging, test pyramid completion, and CI/CD
   - [ ] 5.1 Write Testcontainers integration tests in `tests/integration/conftest.py` (session-scoped fixture that starts `oanda-mcp:ci` Docker image, yields base URL) and `tests/integration/test_integration.py` (call MCP tools over HTTP, assert response shapes)
