@@ -2,6 +2,7 @@
 
 > Spec: OANDA V20 MCP Server
 > Created: 2026-05-24
+> Status: Approved
 
 ## Overview
 
