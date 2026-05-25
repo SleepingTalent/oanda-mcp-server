@@ -32,8 +32,8 @@ async def test_get_account_summary(mcp_base_url: str) -> None:
     assert isinstance(data, dict)
     assert "balance" in data
     assert "currency" in data
-    assert "nav" in data
-    assert "open_trade_count" in data
+    assert "NAV" in data
+    assert "openTradeCount" in data
 
 
 @pytest.mark.asyncio
