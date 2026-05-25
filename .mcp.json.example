@@ -1,5 +1,21 @@
 {
   "mcpServers": {
+    "oanda-mcp": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "--env", "OANDA_API_KEY",
+        "--env", "OANDA_ACCOUNT_ID",
+        "--env", "OANDA_ENVIRONMENT",
+        "yourdockerhubuser/oanda-mcp-server:latest"
+      ],
+      "env": {
+        "OANDA_API_KEY": "your-oanda-api-key-here",
+        "OANDA_ACCOUNT_ID": "your-oanda-account-id-here",
+        "OANDA_ENVIRONMENT": "practice"
+      }
+    },
     "brave-search": {
       "type": "stdio",
       "command": "/opt/homebrew/bin/npx",
