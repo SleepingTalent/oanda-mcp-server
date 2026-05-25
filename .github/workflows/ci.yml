@@ -95,7 +95,7 @@ jobs:
           print('.'.join(v))
           ")
           sed -i "s/^version = \"${{ steps.version.outputs.value }}\"/version = \"$NEW_VERSION\"/" pyproject.toml
-          uv lock --frozen false
+          uv lock
           echo "value=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Commit and push version bump
