@@ -24,6 +24,7 @@ def mcp_base_url() -> str:
         .with_env("OANDA_ACCOUNT_ID", account_id)
         .with_env("OANDA_ENVIRONMENT", os.environ.get("OANDA_ENVIRONMENT", "practice"))
         .with_env("MCP_PORT", str(_MCP_PORT))
+        .with_env("MCP_TRANSPORT", "http")
     )
     container.waiting_for(PortWaitStrategy(_MCP_PORT).with_startup_timeout(60))
 
