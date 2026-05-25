@@ -13,7 +13,7 @@ def test_settings_requires_api_key(monkeypatch):
     from oanda_mcp.config import Settings
 
     with pytest.raises(ValidationError):
-        Settings()
+        Settings(_env_file=None)
 
 
 def test_settings_requires_account_id(monkeypatch):
@@ -24,7 +24,7 @@ def test_settings_requires_account_id(monkeypatch):
     from oanda_mcp.config import Settings
 
     with pytest.raises(ValidationError):
-        Settings()
+        Settings(_env_file=None)
 
 
 def test_settings_environment_defaults_to_practice(monkeypatch):
