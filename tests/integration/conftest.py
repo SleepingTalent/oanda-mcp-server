@@ -26,7 +26,9 @@ def mcp_base_url() -> str:
         .with_env("MCP_PORT", str(_MCP_PORT))
         .with_env("MCP_TRANSPORT", "http")
     )
-    container.waiting_for(LogMessageWaitStrategy("Application startup complete").with_startup_timeout(60))
+    container.waiting_for(
+        LogMessageWaitStrategy("Application startup complete").with_startup_timeout(60)
+    )
 
     with container:
         host = container.get_container_host_ip()
