@@ -18,9 +18,7 @@ async def list_open_positions(client: OandaClient, account_id: str) -> list[Posi
     return [Position(**p) for p in data["positions"]]
 
 
-async def get_position(
-    client: OandaClient, account_id: str, instrument: str
-) -> Position:
+async def get_position(client: OandaClient, account_id: str, instrument: str) -> Position:
     """Return the position for a specific instrument."""
     data = await client.get(f"/accounts/{account_id}/positions/{instrument}")
     return Position(**data["position"])

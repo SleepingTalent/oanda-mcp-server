@@ -14,8 +14,12 @@ _CANDLE_PAYLOAD = {
     "instrument": INSTRUMENT,
     "granularity": "M1",
     "candles": [
-        {"time": "2024-01-01T00:00:00Z", "volume": 100, "complete": True,
-         "mid": {"o": "1.10", "h": "1.11", "l": "1.09", "c": "1.105"}},
+        {
+            "time": "2024-01-01T00:00:00Z",
+            "volume": 100,
+            "complete": True,
+            "mid": {"o": "1.10", "h": "1.11", "l": "1.09", "c": "1.105"},
+        },
     ],
 }
 
@@ -26,6 +30,7 @@ def mock_client() -> AsyncMock:
 
 
 # --- get_candles ---
+
 
 async def test_get_candles_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = _CANDLE_PAYLOAD
@@ -51,50 +56,130 @@ async def test_get_candles_propagates_api_error(mock_client: AsyncMock) -> None:
         await get_candles(mock_client, "INVALID", granularity="M1", count=10)
 
 
+_ORDER_BOOK_PAYLOAD = {
+    "orderBook": {
+        "instrument": INSTRUMENT,
+        "time": "2024-01-01T00:00:00Z",
+        "price": "1.1000",
+        "bucketWidth": "0.0050",
+        "buckets": [],
+    }
+}
+
+_POSITION_BOOK_PAYLOAD = {
+    "positionBook": {
+        "instrument": INSTRUMENT,
+        "time": "2024-01-01T00:00:00Z",
+        "price": "1.1000",
+        "bucketWidth": "0.0050",
+        "buckets": [],
+    }
+}
+
+
 # --- get_order_book ---
 
+
 async def test_get_order_book_calls_correct_endpoint(mock_client: AsyncMock) -> None:
-    mock_client.get.return_value = {
-        "orderBook": {
-            "instrument": INSTRUMENT, "time": "2024-01-01T00:00:00Z",
-            "price": "1.1000", "bucketWidth": "0.0050", "buckets": []
-        }
-    }
+    mock_client.get.return_value = _ORDER_BOOK_PAYLOAD
     await get_order_book(mock_client, INSTRUMENT)
-    mock_client.get.assert_called_once_with(f"/instruments/{INSTRUMENT}/orderBook")
+    mock_client.get.assert_called_once_with(f"/instruments/{INSTRUMENT}/orderBook", params={})
 
 
 async def test_get_order_book_returns_model(mock_client: AsyncMock) -> None:
-    mock_client.get.return_value = {
-        "orderBook": {
-            "instrument": INSTRUMENT, "time": "2024-01-01T00:00:00Z",
-            "price": "1.1000", "bucketWidth": "0.0050", "buckets": []
-        }
-    }
+    mock_client.get.return_value = _ORDER_BOOK_PAYLOAD
     result = await get_order_book(mock_client, INSTRUMENT)
     assert isinstance(result, OrderBook)
     assert result.instrument == INSTRUMENT
 
 
-# --- get_position_book ---
+async def test_get_order_book_passes_time_param(mock_client: AsyncMock) -> None:
+    mock_client.get.return_value = _ORDER_BOOK_PAYLOAD
+    await get_order_book(mock_client, INSTRUMENT, time="2024-01-01T00:00:00Z")
+    mock_client.get.assert_called_once_with(
+        f"/instruments/{INSTRUMENT}/orderBook",
+        params={"time": "2024-01-01T00:00:00Z"},
+    )
 
-async def test_get_position_book_calls_correct_endpoint(mock_client: AsyncMock) -> None:
+
+async def test_get_order_book_omits_time_when_none(mock_client: AsyncMock) -> None:
+    mock_client.get.return_value = _ORDER_BOOK_PAYLOAD
+    await get_order_book(mock_client, INSTRUMENT, time=None)
+    _, kwargs = mock_client.get.call_args
+    assert "time" not in kwargs.get("params", {})
+
+
+async def test_get_order_book_empty_buckets(mock_client: AsyncMock) -> None:
+    mock_client.get.return_value = _ORDER_BOOK_PAYLOAD
+    result = await get_order_book(mock_client, INSTRUMENT)
+    assert result.buckets == []
+
+
+async def test_get_order_book_with_buckets(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {
-        "positionBook": {
-            "instrument": INSTRUMENT, "time": "2024-01-01T00:00:00Z",
-            "price": "1.1000", "bucketWidth": "0.0050", "buckets": []
+        "orderBook": {
+            "instrument": INSTRUMENT,
+            "time": "2024-01-01T00:00:00Z",
+            "price": "1.1000",
+            "bucketWidth": "0.0050",
+            "buckets": [
+                {"price": "1.0950", "longCountPercent": "10.0", "shortCountPercent": "5.0"}
+            ],
         }
     }
+    result = await get_order_book(mock_client, INSTRUMENT)
+    assert len(result.buckets) == 1
+    assert result.buckets[0].price == "1.0950"
+
+
+# --- get_position_book ---
+
+
+async def test_get_position_book_calls_correct_endpoint(mock_client: AsyncMock) -> None:
+    mock_client.get.return_value = _POSITION_BOOK_PAYLOAD
     await get_position_book(mock_client, INSTRUMENT)
-    mock_client.get.assert_called_once_with(f"/instruments/{INSTRUMENT}/positionBook")
+    mock_client.get.assert_called_once_with(f"/instruments/{INSTRUMENT}/positionBook", params={})
 
 
 async def test_get_position_book_returns_model(mock_client: AsyncMock) -> None:
+    mock_client.get.return_value = _POSITION_BOOK_PAYLOAD
+    result = await get_position_book(mock_client, INSTRUMENT)
+    assert isinstance(result, PositionBook)
+    assert result.instrument == INSTRUMENT
+
+
+async def test_get_position_book_passes_time_param(mock_client: AsyncMock) -> None:
+    mock_client.get.return_value = _POSITION_BOOK_PAYLOAD
+    await get_position_book(mock_client, INSTRUMENT, time="2024-01-01T00:00:00Z")
+    mock_client.get.assert_called_once_with(
+        f"/instruments/{INSTRUMENT}/positionBook",
+        params={"time": "2024-01-01T00:00:00Z"},
+    )
+
+
+async def test_get_position_book_omits_time_when_none(mock_client: AsyncMock) -> None:
+    mock_client.get.return_value = _POSITION_BOOK_PAYLOAD
+    await get_position_book(mock_client, INSTRUMENT, time=None)
+    _, kwargs = mock_client.get.call_args
+    assert "time" not in kwargs.get("params", {})
+
+
+async def test_get_position_book_empty_buckets(mock_client: AsyncMock) -> None:
+    mock_client.get.return_value = _POSITION_BOOK_PAYLOAD
+    result = await get_position_book(mock_client, INSTRUMENT)
+    assert result.buckets == []
+
+
+async def test_get_position_book_with_buckets(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {
         "positionBook": {
-            "instrument": INSTRUMENT, "time": "2024-01-01T00:00:00Z",
-            "price": "1.1000", "bucketWidth": "0.0050", "buckets": []
+            "instrument": INSTRUMENT,
+            "time": "2024-01-01T00:00:00Z",
+            "price": "1.1000",
+            "bucketWidth": "0.0050",
+            "buckets": [{"price": "1.0950", "longCountPercent": "4.0", "shortCountPercent": "2.0"}],
         }
     }
     result = await get_position_book(mock_client, INSTRUMENT)
-    assert isinstance(result, PositionBook)
+    assert len(result.buckets) == 1
+    assert result.buckets[0].longCountPercent == "4.0"

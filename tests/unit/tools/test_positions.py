@@ -30,6 +30,7 @@ def mock_client() -> AsyncMock:
 
 # --- list_positions ---
 
+
 async def test_list_positions_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"positions": []}
     await list_positions(mock_client, ACCOUNT_ID)
@@ -45,6 +46,7 @@ async def test_list_positions_returns_list_of_position(mock_client: AsyncMock) -
 
 # --- list_open_positions ---
 
+
 async def test_list_open_positions_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"positions": []}
     await list_open_positions(mock_client, ACCOUNT_ID)
@@ -53,12 +55,11 @@ async def test_list_open_positions_calls_correct_endpoint(mock_client: AsyncMock
 
 # --- get_position ---
 
+
 async def test_get_position_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"position": _POSITION_DATA}
     await get_position(mock_client, ACCOUNT_ID, INSTRUMENT)
-    mock_client.get.assert_called_once_with(
-        f"/accounts/{ACCOUNT_ID}/positions/{INSTRUMENT}"
-    )
+    mock_client.get.assert_called_once_with(f"/accounts/{ACCOUNT_ID}/positions/{INSTRUMENT}")
 
 
 async def test_get_position_returns_position_model(mock_client: AsyncMock) -> None:
@@ -69,6 +70,7 @@ async def test_get_position_returns_position_model(mock_client: AsyncMock) -> No
 
 
 # --- close_position ---
+
 
 async def test_close_position_long_side(mock_client: AsyncMock) -> None:
     mock_client.put.return_value = {"longOrderFillTransaction": {}, "lastTransactionID": "20"}

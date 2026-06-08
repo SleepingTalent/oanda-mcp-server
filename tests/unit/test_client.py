@@ -63,9 +63,7 @@ async def test_client_uses_practice_base_url(
         await client.get("/ping")
 
 
-async def test_client_uses_live_base_url(
-    live_settings: Settings, httpx_mock: HTTPXMock
-) -> None:
+async def test_client_uses_live_base_url(live_settings: Settings, httpx_mock: HTTPXMock) -> None:
     """OandaClient sends requests to the live base URL when environment is live."""
     httpx_mock.add_response(url="https://api-fxtrade.oanda.com/v3/ping", json={})
 
@@ -104,9 +102,7 @@ async def test_client_sets_content_type_header(
 # --- HTTP method tests ---
 
 
-async def test_get_returns_json(
-    practice_settings: Settings, httpx_mock: HTTPXMock
-) -> None:
+async def test_get_returns_json(practice_settings: Settings, httpx_mock: HTTPXMock) -> None:
     """get() returns parsed JSON from the response body."""
     httpx_mock.add_response(
         url="https://api-fxpractice.oanda.com/v3/accounts",
@@ -119,9 +115,7 @@ async def test_get_returns_json(
     assert result == {"accounts": []}
 
 
-async def test_post_sends_json_body(
-    practice_settings: Settings, httpx_mock: HTTPXMock
-) -> None:
+async def test_post_sends_json_body(practice_settings: Settings, httpx_mock: HTTPXMock) -> None:
     """post() sends a JSON body and returns parsed JSON response."""
     httpx_mock.add_response(
         url="https://api-fxpractice.oanda.com/v3/accounts/001-001-12345-001/orders",
@@ -141,9 +135,7 @@ async def test_post_sends_json_body(
     assert request.method == "POST"
 
 
-async def test_put_sends_json_body(
-    practice_settings: Settings, httpx_mock: HTTPXMock
-) -> None:
+async def test_put_sends_json_body(practice_settings: Settings, httpx_mock: HTTPXMock) -> None:
     """put() sends a JSON body and returns parsed JSON response."""
     httpx_mock.add_response(
         url="https://api-fxpractice.oanda.com/v3/accounts/001-001-12345-001/orders/123/cancel",
@@ -161,9 +153,7 @@ async def test_put_sends_json_body(
     assert request.method == "PUT"
 
 
-async def test_get_with_params(
-    practice_settings: Settings, httpx_mock: HTTPXMock
-) -> None:
+async def test_get_with_params(practice_settings: Settings, httpx_mock: HTTPXMock) -> None:
     """get() passes query parameters to the request."""
     httpx_mock.add_response(
         url="https://api-fxpractice.oanda.com/v3/accounts/001-001-12345-001/trades?state=OPEN",
@@ -171,9 +161,7 @@ async def test_get_with_params(
     )
 
     async with OandaClient(practice_settings) as client:
-        result = await client.get(
-            "/accounts/001-001-12345-001/trades", params={"state": "OPEN"}
-        )
+        result = await client.get("/accounts/001-001-12345-001/trades", params={"state": "OPEN"})
 
     assert result == {"trades": []}
 

@@ -15,7 +15,9 @@ from oanda_mcp.tools.transactions import (
 ACCOUNT_ID = "001-001-12345-001"
 
 _TX_DATA = {
-    "id": "100", "accountID": ACCOUNT_ID, "type": "ORDER_FILL",
+    "id": "100",
+    "accountID": ACCOUNT_ID,
+    "type": "ORDER_FILL",
     "time": "2024-01-01T00:00:00Z",
 }
 
@@ -26,6 +28,7 @@ def mock_client() -> AsyncMock:
 
 
 # --- list_transactions ---
+
 
 async def test_list_transactions_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"transactions": [], "lastTransactionID": "100"}
@@ -45,7 +48,8 @@ async def test_list_transactions_returns_page(mock_client: AsyncMock) -> None:
 async def test_list_transactions_passes_filters(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"transactions": [], "lastTransactionID": "100"}
     await list_transactions(
-        mock_client, ACCOUNT_ID,
+        mock_client,
+        ACCOUNT_ID,
         from_time="2024-01-01T00:00:00Z",
         to_time="2024-01-31T23:59:59Z",
         type="ORDER_FILL",
@@ -56,6 +60,7 @@ async def test_list_transactions_passes_filters(mock_client: AsyncMock) -> None:
 
 
 # --- get_transaction ---
+
 
 async def test_get_transaction_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"transaction": _TX_DATA}
@@ -71,6 +76,7 @@ async def test_get_transaction_returns_transaction(mock_client: AsyncMock) -> No
 
 
 # --- get_transaction_range ---
+
 
 async def test_get_transaction_range_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"transactions": [], "lastTransactionID": "200"}

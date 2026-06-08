@@ -43,8 +43,7 @@ class TestAccountSummary:
         from oanda_mcp.models.account import AccountSummary
 
         s = AccountSummary(
-            id="001", currency="USD", balance="10000.00", NAV="10000.00",
-            unknownField="ignored"
+            id="001", currency="USD", balance="10000.00", NAV="10000.00", unknownField="ignored"
         )
         assert not hasattr(s, "unknownField")
 
@@ -62,8 +61,7 @@ class TestAccountDetails:
         from oanda_mcp.models.account import AccountDetails
 
         d = AccountDetails(
-            id="001", currency="GBP", balance="5000.00", NAV="5000.00",
-            openTradeCount=2
+            id="001", currency="GBP", balance="5000.00", NAV="5000.00", openTradeCount=2
         )
         assert d.openTradeCount == 2
 
@@ -86,8 +84,11 @@ class TestTradeableInstrument:
         from oanda_mcp.models.account import TradeableInstrument
 
         i = TradeableInstrument(
-            name="EUR_USD", type="CURRENCY", displayName="EUR/USD",
-            pipLocation=-4, marginRate="0.02"
+            name="EUR_USD",
+            type="CURRENCY",
+            displayName="EUR/USD",
+            pipLocation=-4,
+            marginRate="0.02",
         )
         assert i.pipLocation == -4
         assert i.marginRate == "0.02"
@@ -151,16 +152,85 @@ class TestCandle:
         assert c.mid.o == "1.10"
 
 
+class TestOrderBookBucket:
+    def test_valid_instantiation(self) -> None:
+        from oanda_mcp.models.instruments import OrderBookBucket
+
+        b = OrderBookBucket(price="1.1000", longCountPercent="12.3", shortCountPercent="8.7")
+        assert b.price == "1.1000"
+        assert b.longCountPercent == "12.3"
+        assert b.shortCountPercent == "8.7"
+
+    def test_extra_fields_ignored(self) -> None:
+        from oanda_mcp.models.instruments import OrderBookBucket
+
+        b = OrderBookBucket(
+            price="1.1000", longCountPercent="5.0", shortCountPercent="3.0", unknown="x"
+        )
+        assert not hasattr(b, "unknown")
+
+
 class TestOrderBook:
     def test_valid_instantiation(self) -> None:
         from oanda_mcp.models.instruments import OrderBook
 
         ob = OrderBook(
-            instrument="EUR_USD", time="2024-01-01T00:00:00Z",
-            price="1.1000", bucketWidth="0.0050"
+            instrument="EUR_USD", time="2024-01-01T00:00:00Z", price="1.1000", bucketWidth="0.0050"
         )
         assert ob.instrument == "EUR_USD"
         assert ob.buckets == []
+
+    def test_with_buckets(self) -> None:
+        from oanda_mcp.models.instruments import OrderBook, OrderBookBucket
+
+        ob = OrderBook(
+            instrument="EUR_USD",
+            time="2024-01-01T00:00:00Z",
+            price="1.1000",
+            bucketWidth="0.0050",
+            buckets=[
+                OrderBookBucket(price="1.0950", longCountPercent="10.0", shortCountPercent="5.0")
+            ],
+        )
+        assert len(ob.buckets) == 1
+        assert ob.buckets[0].price == "1.0950"
+
+    def test_extra_fields_ignored(self) -> None:
+        from oanda_mcp.models.instruments import OrderBook
+
+        ob = OrderBook(
+            instrument="EUR_USD",
+            time="2024-01-01T00:00:00Z",
+            price="1.1000",
+            bucketWidth="0.0050",
+            unknownField="x",
+        )
+        assert not hasattr(ob, "unknownField")
+
+    def test_missing_required_field_raises(self) -> None:
+        from pydantic import ValidationError
+
+        from oanda_mcp.models.instruments import OrderBook
+
+        with pytest.raises(ValidationError):
+            OrderBook(time="2024-01-01T00:00:00Z", price="1.1000", bucketWidth="0.0050")  # type: ignore[call-arg]
+
+
+class TestPositionBookBucket:
+    def test_valid_instantiation(self) -> None:
+        from oanda_mcp.models.instruments import PositionBookBucket
+
+        b = PositionBookBucket(price="1.1000", longCountPercent="5.1", shortCountPercent="3.2")
+        assert b.price == "1.1000"
+        assert b.longCountPercent == "5.1"
+
+    def test_extra_fields_ignored(self) -> None:
+        from oanda_mcp.models.instruments import PositionBookBucket
+
+        b = PositionBookBucket(
+            price="1.1000", longCountPercent="5.0", shortCountPercent="3.0", unknown="x"
+        )
+        assert not hasattr(b, "unknown")
 
 
 class TestPositionBook:
@@ -168,10 +238,44 @@ class TestPositionBook:
         from oanda_mcp.models.instruments import PositionBook
 
         pb = PositionBook(
-            instrument="EUR_USD", time="2024-01-01T00:00:00Z",
-            price="1.1000", bucketWidth="0.0050"
+            instrument="EUR_USD", time="2024-01-01T00:00:00Z", price="1.1000", bucketWidth="0.0050"
         )
         assert pb.buckets == []
+
+    def test_with_buckets(self) -> None:
+        from oanda_mcp.models.instruments import PositionBook, PositionBookBucket
+
+        pb = PositionBook(
+            instrument="EUR_USD",
+            time="2024-01-01T00:00:00Z",
+            price="1.1000",
+            bucketWidth="0.0050",
+            buckets=[
+                PositionBookBucket(price="1.0950", longCountPercent="4.0", shortCountPercent="2.0")
+            ],
+        )
+        assert len(pb.buckets) == 1
+        assert pb.buckets[0].longCountPercent == "4.0"
+
+    def test_extra_fields_ignored(self) -> None:
+        from oanda_mcp.models.instruments import PositionBook
+
+        pb = PositionBook(
+            instrument="EUR_USD",
+            time="2024-01-01T00:00:00Z",
+            price="1.1000",
+            bucketWidth="0.0050",
+            unknownField="x",
+        )
+        assert not hasattr(pb, "unknownField")
+
+    def test_missing_required_field_raises(self) -> None:
+        from pydantic import ValidationError
+
+        from oanda_mcp.models.instruments import PositionBook
+
+        with pytest.raises(ValidationError):
+            PositionBook(time="2024-01-01T00:00:00Z", price="1.1000", bucketWidth="0.0050")  # type: ignore[call-arg]
 
 
 # ---------------------------------------------------------------------------
@@ -292,8 +396,7 @@ class TestMarketOrderRequest:
         from oanda_mcp.models.orders import MarketOrderRequest, TakeProfitDetails
 
         o = MarketOrderRequest(
-            instrument="EUR_USD", units="1000",
-            takeProfitOnFill=TakeProfitDetails(price="1.15")
+            instrument="EUR_USD", units="1000", takeProfitOnFill=TakeProfitDetails(price="1.15")
         )
         assert o.takeProfitOnFill is not None
         assert o.takeProfitOnFill.price == "1.15"
@@ -341,8 +444,7 @@ class TestOrderResponse:
         from oanda_mcp.models.orders import OrderResponse
 
         r = OrderResponse(
-            orderCreateTransaction={"id": "1", "type": "MARKET_ORDER"},
-            lastTransactionID="1"
+            orderCreateTransaction={"id": "1", "type": "MARKET_ORDER"}, lastTransactionID="1"
         )
         assert r.orderCreateTransaction is not None
         assert r.lastTransactionID == "1"
@@ -380,8 +482,13 @@ class TestTrade:
         from oanda_mcp.models.trades import Trade
 
         t = Trade(
-            id="1", instrument="EUR_USD", price="1.1", openTime="2024-01-01T00:00:00Z",
-            state="OPEN", initialUnits="1000", currentUnits="1000"
+            id="1",
+            instrument="EUR_USD",
+            price="1.1",
+            openTime="2024-01-01T00:00:00Z",
+            state="OPEN",
+            initialUnits="1000",
+            currentUnits="1000",
         )
         assert t.takeProfitOrder is None
         assert t.stopLossOrder is None
@@ -480,8 +587,7 @@ class TestTransaction:
         from oanda_mcp.models.transactions import Transaction
 
         t = Transaction(
-            id="100", accountID="001-001-1", type="MARKET_ORDER",
-            time="2024-01-01T00:00:00Z"
+            id="100", accountID="001-001-1", type="MARKET_ORDER", time="2024-01-01T00:00:00Z"
         )
         assert t.id == "100"
         assert t.type == "MARKET_ORDER"
@@ -497,9 +603,13 @@ class TestTransaction:
         from oanda_mcp.models.transactions import Transaction
 
         t = Transaction(
-            id="101", accountID="001-001-1", type="ORDER_FILL",
+            id="101",
+            accountID="001-001-1",
+            type="ORDER_FILL",
             time="2024-01-01T00:00:00Z",
-            instrument="EUR_USD", units="1000", price="1.1000"
+            instrument="EUR_USD",
+            units="1000",
+            price="1.1000",
         )
         assert t.instrument == "EUR_USD"
         assert t.price == "1.1000"

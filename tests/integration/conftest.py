@@ -1,4 +1,5 @@
 """Session-scoped Testcontainers fixture for integration tests."""
+
 import os
 
 import pytest

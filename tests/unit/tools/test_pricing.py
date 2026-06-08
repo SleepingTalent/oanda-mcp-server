@@ -18,11 +18,10 @@ def mock_client() -> AsyncMock:
 
 # --- get_prices ---
 
+
 async def test_get_prices_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {
-        "prices": [
-            {"instrument": "EUR_USD", "tradeable": True, "time": "2024-01-01T00:00:00Z"}
-        ]
+        "prices": [{"instrument": "EUR_USD", "tradeable": True, "time": "2024-01-01T00:00:00Z"}]
     }
     await get_prices(mock_client, ACCOUNT_ID, instruments=["EUR_USD"])
     mock_client.get.assert_called_once_with(
@@ -40,9 +39,7 @@ async def test_get_prices_joins_multiple_instruments(mock_client: AsyncMock) -> 
 
 async def test_get_prices_returns_list_of_price(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {
-        "prices": [
-            {"instrument": "EUR_USD", "tradeable": True, "time": "2024-01-01T00:00:00Z"}
-        ]
+        "prices": [{"instrument": "EUR_USD", "tradeable": True, "time": "2024-01-01T00:00:00Z"}]
     }
     result = await get_prices(mock_client, ACCOUNT_ID, instruments=["EUR_USD"])
     assert isinstance(result, list)
@@ -50,6 +47,7 @@ async def test_get_prices_returns_list_of_price(mock_client: AsyncMock) -> None:
 
 
 # --- get_home_conversions ---
+
 
 async def test_get_home_conversions_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {

@@ -30,6 +30,7 @@ dev = [
     "ruff>=0.9",
     "mypy>=1.0",
     "pytest-httpx>=0.36.2",
+    "black>=26.5.1",
 ]
 
 [tool.taskipy.tasks]
@@ -37,11 +38,16 @@ serve = "docker compose up"
 test = "pytest tests/unit/ tests/integration/"
 smoke-test = "pytest tests/smoke/"
 lint = "ruff check ."
+format = "black ."
 typecheck = "mypy src/"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+
+[tool.black]
+line-length = 100
+target-version = ["py313"]
 
 [tool.ruff]
 line-length = 100

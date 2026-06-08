@@ -24,9 +24,7 @@ async def list_transactions(
     return TransactionPage(**data)
 
 
-async def get_transaction(
-    client: OandaClient, account_id: str, transaction_id: str
-) -> Transaction:
+async def get_transaction(client: OandaClient, account_id: str, transaction_id: str) -> Transaction:
     """Return the details of a specific transaction."""
     data = await client.get(f"/accounts/{account_id}/transactions/{transaction_id}")
     return Transaction(**data["transaction"])
