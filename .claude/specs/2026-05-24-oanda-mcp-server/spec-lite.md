@@ -1,3 +1,0 @@
-# Spec Summary (Lite)
-
-A FastMCP server (HTTP/SSE transport, configurable port via `MCP_PORT`) wrapping the OANDA V20 REST API (`/v3/` paths only) to expose account, pricing, order, trade, position, and transaction management as MCP tools for AI agents. Runs in Docker (multi-stage, `python:3.11-slim`), credentials via pydantic-settings + `.env`, environment switching via `OANDA_ENVIRONMENT` (defaults to `practice`); full test pyramid: unit tests with mocked client, integration tests via Testcontainers, local-only smoke test via `task smoke-test`; GitHub Actions builds/tests every branch, pushes to Docker Hub on `main` and version tags only.
