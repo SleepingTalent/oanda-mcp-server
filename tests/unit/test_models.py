@@ -163,7 +163,9 @@ class TestOrderBookBucket:
     def test_extra_fields_ignored(self) -> None:
         from oanda_mcp.models.instruments import OrderBookBucket
 
-        b = OrderBookBucket(price="1.1000", longCountPercent="5.0", shortCountPercent="3.0", unknown="x")
+        b = OrderBookBucket(
+            price="1.1000", longCountPercent="5.0", shortCountPercent="3.0", unknown="x"
+        )
         assert not hasattr(b, "unknown")
 
 
@@ -184,7 +186,9 @@ class TestOrderBook:
         ob = OrderBook(
             instrument="EUR_USD", time="2024-01-01T00:00:00Z",
             price="1.1000", bucketWidth="0.0050",
-            buckets=[OrderBookBucket(price="1.0950", longCountPercent="10.0", shortCountPercent="5.0")],
+            buckets=[
+                OrderBookBucket(price="1.0950", longCountPercent="10.0", shortCountPercent="5.0")
+            ],
         )
         assert len(ob.buckets) == 1
         assert ob.buckets[0].price == "1.0950"
@@ -200,6 +204,7 @@ class TestOrderBook:
 
     def test_missing_required_field_raises(self) -> None:
         from pydantic import ValidationError
+
         from oanda_mcp.models.instruments import OrderBook
 
         with pytest.raises(ValidationError):
@@ -217,7 +222,9 @@ class TestPositionBookBucket:
     def test_extra_fields_ignored(self) -> None:
         from oanda_mcp.models.instruments import PositionBookBucket
 
-        b = PositionBookBucket(price="1.1000", longCountPercent="5.0", shortCountPercent="3.0", unknown="x")
+        b = PositionBookBucket(
+            price="1.1000", longCountPercent="5.0", shortCountPercent="3.0", unknown="x"
+        )
         assert not hasattr(b, "unknown")
 
 
@@ -237,7 +244,9 @@ class TestPositionBook:
         pb = PositionBook(
             instrument="EUR_USD", time="2024-01-01T00:00:00Z",
             price="1.1000", bucketWidth="0.0050",
-            buckets=[PositionBookBucket(price="1.0950", longCountPercent="4.0", shortCountPercent="2.0")],
+            buckets=[
+                PositionBookBucket(price="1.0950", longCountPercent="4.0", shortCountPercent="2.0")
+            ],
         )
         assert len(pb.buckets) == 1
         assert pb.buckets[0].longCountPercent == "4.0"
@@ -253,6 +262,7 @@ class TestPositionBook:
 
     def test_missing_required_field_raises(self) -> None:
         from pydantic import ValidationError
+
         from oanda_mcp.models.instruments import PositionBook
 
         with pytest.raises(ValidationError):

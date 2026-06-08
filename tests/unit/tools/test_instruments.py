@@ -110,7 +110,9 @@ async def test_get_order_book_with_buckets(mock_client: AsyncMock) -> None:
         "orderBook": {
             "instrument": INSTRUMENT, "time": "2024-01-01T00:00:00Z",
             "price": "1.1000", "bucketWidth": "0.0050",
-            "buckets": [{"price": "1.0950", "longCountPercent": "10.0", "shortCountPercent": "5.0"}],
+            "buckets": [
+                {"price": "1.0950", "longCountPercent": "10.0", "shortCountPercent": "5.0"}
+            ],
         }
     }
     result = await get_order_book(mock_client, INSTRUMENT)
