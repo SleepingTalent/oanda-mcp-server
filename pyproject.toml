@@ -1,6 +1,6 @@
 [project]
 name = "oanda-mcp"
-version = "0.1.2"
+version = "0.1.3"
 description = "FastMCP server wrapping the OANDA V20 REST API for AI agent trading"
 readme = "README.md"
 authors = [
