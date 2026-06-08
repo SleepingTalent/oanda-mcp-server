@@ -100,16 +100,28 @@ async def get_candles(
 
 
 @mcp.tool
-async def get_order_book(instrument: str, ctx: Context) -> dict[str, Any]:
-    """Return the order book snapshot for an instrument."""
-    result = await _instruments.get_order_book(_client(ctx), instrument)
+async def get_order_book(
+    instrument: str, ctx: Context, time: str | None = None
+) -> dict[str, Any]:
+    """Return the order book snapshot showing where open orders are clustered by price level.
+
+    instrument: e.g. 'EUR_USD'
+    time: optional RFC3339 datetime for a historical snapshot; omit for the latest
+    """
+    result = await _instruments.get_order_book(_client(ctx), instrument, time=time)
     return result.model_dump()
 
 
 @mcp.tool
-async def get_position_book(instrument: str, ctx: Context) -> dict[str, Any]:
-    """Return the position book snapshot for an instrument."""
-    result = await _instruments.get_position_book(_client(ctx), instrument)
+async def get_position_book(
+    instrument: str, ctx: Context, time: str | None = None
+) -> dict[str, Any]:
+    """Return the position book snapshot showing open position distribution by price level.
+
+    instrument: e.g. 'EUR_USD'
+    time: optional RFC3339 datetime for a historical snapshot; omit for the latest
+    """
+    result = await _instruments.get_position_book(_client(ctx), instrument, time=time)
     return result.model_dump()
 
 

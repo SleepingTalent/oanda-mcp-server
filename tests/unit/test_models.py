@@ -151,6 +151,22 @@ class TestCandle:
         assert c.mid.o == "1.10"
 
 
+class TestOrderBookBucket:
+    def test_valid_instantiation(self) -> None:
+        from oanda_mcp.models.instruments import OrderBookBucket
+
+        b = OrderBookBucket(price="1.1000", longCountPercent="12.3", shortCountPercent="8.7")
+        assert b.price == "1.1000"
+        assert b.longCountPercent == "12.3"
+        assert b.shortCountPercent == "8.7"
+
+    def test_extra_fields_ignored(self) -> None:
+        from oanda_mcp.models.instruments import OrderBookBucket
+
+        b = OrderBookBucket(price="1.1000", longCountPercent="5.0", shortCountPercent="3.0", unknown="x")
+        assert not hasattr(b, "unknown")
+
+
 class TestOrderBook:
     def test_valid_instantiation(self) -> None:
         from oanda_mcp.models.instruments import OrderBook
@@ -162,6 +178,48 @@ class TestOrderBook:
         assert ob.instrument == "EUR_USD"
         assert ob.buckets == []
 
+    def test_with_buckets(self) -> None:
+        from oanda_mcp.models.instruments import OrderBook, OrderBookBucket
+
+        ob = OrderBook(
+            instrument="EUR_USD", time="2024-01-01T00:00:00Z",
+            price="1.1000", bucketWidth="0.0050",
+            buckets=[OrderBookBucket(price="1.0950", longCountPercent="10.0", shortCountPercent="5.0")],
+        )
+        assert len(ob.buckets) == 1
+        assert ob.buckets[0].price == "1.0950"
+
+    def test_extra_fields_ignored(self) -> None:
+        from oanda_mcp.models.instruments import OrderBook
+
+        ob = OrderBook(
+            instrument="EUR_USD", time="2024-01-01T00:00:00Z",
+            price="1.1000", bucketWidth="0.0050", unknownField="x"
+        )
+        assert not hasattr(ob, "unknownField")
+
+    def test_missing_required_field_raises(self) -> None:
+        from pydantic import ValidationError
+        from oanda_mcp.models.instruments import OrderBook
+
+        with pytest.raises(ValidationError):
+            OrderBook(time="2024-01-01T00:00:00Z", price="1.1000", bucketWidth="0.0050")  # type: ignore[call-arg]
+
+
+class TestPositionBookBucket:
+    def test_valid_instantiation(self) -> None:
+        from oanda_mcp.models.instruments import PositionBookBucket
+
+        b = PositionBookBucket(price="1.1000", longCountPercent="5.1", shortCountPercent="3.2")
+        assert b.price == "1.1000"
+        assert b.longCountPercent == "5.1"
+
+    def test_extra_fields_ignored(self) -> None:
+        from oanda_mcp.models.instruments import PositionBookBucket
+
+        b = PositionBookBucket(price="1.1000", longCountPercent="5.0", shortCountPercent="3.0", unknown="x")
+        assert not hasattr(b, "unknown")
+
 
 class TestPositionBook:
     def test_valid_instantiation(self) -> None:
@@ -172,6 +230,33 @@ class TestPositionBook:
             price="1.1000", bucketWidth="0.0050"
         )
         assert pb.buckets == []
+
+    def test_with_buckets(self) -> None:
+        from oanda_mcp.models.instruments import PositionBook, PositionBookBucket
+
+        pb = PositionBook(
+            instrument="EUR_USD", time="2024-01-01T00:00:00Z",
+            price="1.1000", bucketWidth="0.0050",
+            buckets=[PositionBookBucket(price="1.0950", longCountPercent="4.0", shortCountPercent="2.0")],
+        )
+        assert len(pb.buckets) == 1
+        assert pb.buckets[0].longCountPercent == "4.0"
+
+    def test_extra_fields_ignored(self) -> None:
+        from oanda_mcp.models.instruments import PositionBook
+
+        pb = PositionBook(
+            instrument="EUR_USD", time="2024-01-01T00:00:00Z",
+            price="1.1000", bucketWidth="0.0050", unknownField="x"
+        )
+        assert not hasattr(pb, "unknownField")
+
+    def test_missing_required_field_raises(self) -> None:
+        from pydantic import ValidationError
+        from oanda_mcp.models.instruments import PositionBook
+
+        with pytest.raises(ValidationError):
+            PositionBook(time="2024-01-01T00:00:00Z", price="1.1000", bucketWidth="0.0050")  # type: ignore[call-arg]
 
 
 # ---------------------------------------------------------------------------
