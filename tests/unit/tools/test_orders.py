@@ -29,6 +29,7 @@ def mock_client() -> AsyncMock:
 
 # --- create_order ---
 
+
 async def test_create_market_order_calls_post(mock_client: AsyncMock) -> None:
     mock_client.post.return_value = _FILL_RESPONSE
     order = MarketOrderRequest(instrument="EUR_USD", units="1000")
@@ -57,6 +58,7 @@ async def test_create_order_propagates_api_error(mock_client: AsyncMock) -> None
 
 # --- list_orders ---
 
+
 async def test_list_orders_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"orders": [], "lastTransactionID": "10"}
     await list_orders(mock_client, ACCOUNT_ID)
@@ -74,7 +76,8 @@ async def test_list_orders_filters_by_state(mock_client: AsyncMock) -> None:
 
 async def test_list_orders_returns_list(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {
-        "orders": [{"id": "1", "type": "LIMIT_ORDER"}], "lastTransactionID": "10"
+        "orders": [{"id": "1", "type": "LIMIT_ORDER"}],
+        "lastTransactionID": "10",
     }
     result = await list_orders(mock_client, ACCOUNT_ID)
     assert isinstance(result, list)
@@ -83,6 +86,7 @@ async def test_list_orders_returns_list(mock_client: AsyncMock) -> None:
 
 # --- get_order ---
 
+
 async def test_get_order_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"order": {"id": "42", "type": "LIMIT_ORDER"}}
     await get_order(mock_client, ACCOUNT_ID, "42")
@@ -90,6 +94,7 @@ async def test_get_order_calls_correct_endpoint(mock_client: AsyncMock) -> None:
 
 
 # --- cancel_order ---
+
 
 async def test_cancel_order_calls_put(mock_client: AsyncMock) -> None:
     mock_client.put.return_value = {"orderCancelTransaction": {"id": "5"}, "lastTransactionID": "5"}
@@ -104,6 +109,7 @@ async def test_cancel_order_returns_order_response(mock_client: AsyncMock) -> No
 
 
 # --- replace_order ---
+
 
 async def test_replace_order_calls_put_with_body(mock_client: AsyncMock) -> None:
     mock_client.put.return_value = _CREATE_RESPONSE

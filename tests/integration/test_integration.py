@@ -6,6 +6,7 @@ These tests require:
 
 Run with: uv run pytest tests/integration/
 """
+
 import pytest
 from fastmcp import Client
 

@@ -4,6 +4,7 @@ Run with: uv run task smoke-test
 Requires OANDA_API_KEY and OANDA_ACCOUNT_ID set in .env or environment.
 No trading actions are performed.
 """
+
 import pytest
 from pydantic import ValidationError
 

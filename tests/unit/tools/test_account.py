@@ -33,6 +33,7 @@ def mock_client() -> AsyncMock:
 
 # --- get_account_summary ---
 
+
 async def test_get_account_summary_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = _SUMMARY_PAYLOAD
     await get_account_summary(mock_client, ACCOUNT_ID)
@@ -56,6 +57,7 @@ async def test_get_account_summary_propagates_api_error(mock_client: AsyncMock) 
 
 # --- get_account_details ---
 
+
 async def test_get_account_details_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"account": {**_SUMMARY_PAYLOAD["account"], "trades": []}}
     await get_account_details(mock_client, ACCOUNT_ID)
@@ -64,10 +66,9 @@ async def test_get_account_details_calls_correct_endpoint(mock_client: AsyncMock
 
 # --- get_tradeable_instruments ---
 
+
 async def test_get_tradeable_instruments_returns_list(mock_client: AsyncMock) -> None:
-    mock_client.get.return_value = {
-        "instruments": [{"name": "EUR_USD"}, {"name": "GBP_USD"}]
-    }
+    mock_client.get.return_value = {"instruments": [{"name": "EUR_USD"}, {"name": "GBP_USD"}]}
     result = await get_tradeable_instruments(mock_client, ACCOUNT_ID)
     assert isinstance(result, list)
     assert all(isinstance(i, TradeableInstrument) for i in result)
@@ -82,10 +83,9 @@ async def test_get_tradeable_instruments_calls_correct_endpoint(mock_client: Asy
 
 # --- get_account_changes ---
 
+
 async def test_get_account_changes_sends_since_id(mock_client: AsyncMock) -> None:
-    mock_client.get.return_value = {
-        "changes": {}, "state": {}, "lastTransactionID": "200"
-    }
+    mock_client.get.return_value = {"changes": {}, "state": {}, "lastTransactionID": "200"}
     await get_account_changes(mock_client, ACCOUNT_ID, since_transaction_id="100")
     mock_client.get.assert_called_once_with(
         f"/accounts/{ACCOUNT_ID}/changes",

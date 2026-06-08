@@ -13,9 +13,7 @@ from oanda_mcp.models.orders import (
 OrderRequest = MarketOrderRequest | LimitOrderRequest | StopOrderRequest
 
 
-async def create_order(
-    client: OandaClient, account_id: str, order: OrderRequest
-) -> OrderResponse:
+async def create_order(client: OandaClient, account_id: str, order: OrderRequest) -> OrderResponse:
     """Create a Market, Limit, or Stop order on the account."""
     data = await client.post(
         f"/accounts/{account_id}/orders",
@@ -41,17 +39,13 @@ async def list_orders(
     return list(data["orders"])
 
 
-async def get_order(
-    client: OandaClient, account_id: str, order_id: str
-) -> dict[str, Any]:
+async def get_order(client: OandaClient, account_id: str, order_id: str) -> dict[str, Any]:
     """Return the details of a specific order."""
     data = await client.get(f"/accounts/{account_id}/orders/{order_id}")
     return dict(data["order"])
 
 
-async def cancel_order(
-    client: OandaClient, account_id: str, order_id: str
-) -> OrderResponse:
+async def cancel_order(client: OandaClient, account_id: str, order_id: str) -> OrderResponse:
     """Cancel a pending order."""
     data = await client.put(f"/accounts/{account_id}/orders/{order_id}/cancel")
     return OrderResponse(**data)

@@ -100,9 +100,7 @@ async def get_candles(
 
 
 @mcp.tool
-async def get_order_book(
-    instrument: str, ctx: Context, time: str | None = None
-) -> dict[str, Any]:
+async def get_order_book(instrument: str, ctx: Context, time: str | None = None) -> dict[str, Any]:
     """Return the order book snapshot showing where open orders are clustered by price level.
 
     instrument: e.g. 'EUR_USD'
@@ -170,8 +168,11 @@ async def create_market_order(
         units=units,
         takeProfitOnFill=TakeProfitDetails(price=take_profit_price) if take_profit_price else None,
         stopLossOnFill=StopLossDetails(price=stop_loss_price) if stop_loss_price else None,
-        trailingStopLossOnFill=TrailingStopLossDetails(distance=trailing_stop_distance)
-        if trailing_stop_distance else None,
+        trailingStopLossOnFill=(
+            TrailingStopLossDetails(distance=trailing_stop_distance)
+            if trailing_stop_distance
+            else None
+        ),
     )
     result = await _orders.create_order(_client(ctx), _account_id(ctx), order)
     return result.model_dump()
@@ -198,8 +199,11 @@ async def create_limit_order(
         timeInForce=time_in_force,
         takeProfitOnFill=TakeProfitDetails(price=take_profit_price) if take_profit_price else None,
         stopLossOnFill=StopLossDetails(price=stop_loss_price) if stop_loss_price else None,
-        trailingStopLossOnFill=TrailingStopLossDetails(distance=trailing_stop_distance)
-        if trailing_stop_distance else None,
+        trailingStopLossOnFill=(
+            TrailingStopLossDetails(distance=trailing_stop_distance)
+            if trailing_stop_distance
+            else None
+        ),
     )
     result = await _orders.create_order(_client(ctx), _account_id(ctx), order)
     return result.model_dump()
@@ -226,8 +230,11 @@ async def create_stop_order(
         timeInForce=time_in_force,
         takeProfitOnFill=TakeProfitDetails(price=take_profit_price) if take_profit_price else None,
         stopLossOnFill=StopLossDetails(price=stop_loss_price) if stop_loss_price else None,
-        trailingStopLossOnFill=TrailingStopLossDetails(distance=trailing_stop_distance)
-        if trailing_stop_distance else None,
+        trailingStopLossOnFill=(
+            TrailingStopLossDetails(distance=trailing_stop_distance)
+            if trailing_stop_distance
+            else None
+        ),
     )
     result = await _orders.create_order(_client(ctx), _account_id(ctx), order)
     return result.model_dump()
@@ -302,8 +309,11 @@ async def update_trade_orders(
     request = UpdateTradeOrdersRequest(
         takeProfit=TakeProfitDetails(price=take_profit_price) if take_profit_price else None,
         stopLoss=StopLossDetails(price=stop_loss_price) if stop_loss_price else None,
-        trailingStopLoss=TrailingStopLossDetails(distance=trailing_stop_distance)
-        if trailing_stop_distance else None,
+        trailingStopLoss=(
+            TrailingStopLossDetails(distance=trailing_stop_distance)
+            if trailing_stop_distance
+            else None
+        ),
     )
     return await _trades.update_trade_orders(_client(ctx), _account_id(ctx), trade_id, request)
 
@@ -360,8 +370,7 @@ async def list_transactions(
 ) -> dict[str, Any]:
     """Return transaction history. Optionally filter by RFC3339 time range or type."""
     result = await _transactions.list_transactions(
-        _client(ctx), _account_id(ctx),
-        from_time=from_time, to_time=to_time, type=type
+        _client(ctx), _account_id(ctx), from_time=from_time, to_time=to_time, type=type
     )
     return result.model_dump()
 
@@ -374,9 +383,7 @@ async def get_transaction(transaction_id: str, ctx: Context) -> dict[str, Any]:
 
 
 @mcp.tool
-async def get_transaction_range(
-    from_id: str, to_id: str, ctx: Context
-) -> dict[str, Any]:
+async def get_transaction_range(from_id: str, to_id: str, ctx: Context) -> dict[str, Any]:
     """Return all transactions between two transaction IDs (inclusive)."""
     result = await _transactions.get_transaction_range(
         _client(ctx), _account_id(ctx), from_id=from_id, to_id=to_id

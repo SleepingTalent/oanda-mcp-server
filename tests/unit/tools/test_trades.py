@@ -13,9 +13,13 @@ ACCOUNT_ID = "001-001-12345-001"
 TRADE_ID = "10"
 
 _TRADE_DATA = {
-    "id": TRADE_ID, "instrument": "EUR_USD", "price": "1.1000",
-    "openTime": "2024-01-01T00:00:00Z", "state": "OPEN",
-    "initialUnits": "1000", "currentUnits": "1000",
+    "id": TRADE_ID,
+    "instrument": "EUR_USD",
+    "price": "1.1000",
+    "openTime": "2024-01-01T00:00:00Z",
+    "state": "OPEN",
+    "initialUnits": "1000",
+    "currentUnits": "1000",
 }
 
 
@@ -25,6 +29,7 @@ def mock_client() -> AsyncMock:
 
 
 # --- list_trades ---
+
 
 async def test_list_trades_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"trades": [], "lastTransactionID": "10"}
@@ -49,6 +54,7 @@ async def test_list_trades_filters_by_instrument(mock_client: AsyncMock) -> None
 
 # --- get_trade ---
 
+
 async def test_get_trade_calls_correct_endpoint(mock_client: AsyncMock) -> None:
     mock_client.get.return_value = {"trade": _TRADE_DATA}
     await get_trade(mock_client, ACCOUNT_ID, TRADE_ID)
@@ -72,6 +78,7 @@ async def test_get_trade_propagates_api_error(mock_client: AsyncMock) -> None:
 
 # --- close_trade ---
 
+
 async def test_close_trade_calls_put(mock_client: AsyncMock) -> None:
     mock_client.put.return_value = {"orderFillTransaction": {}, "lastTransactionID": "11"}
     await close_trade(mock_client, ACCOUNT_ID, TRADE_ID)
@@ -89,6 +96,7 @@ async def test_close_trade_partial_units(mock_client: AsyncMock) -> None:
 
 
 # --- update_trade_orders ---
+
 
 async def test_update_trade_orders_calls_put(mock_client: AsyncMock) -> None:
     mock_client.put.return_value = {"takeProfitOrderTransaction": {}, "lastTransactionID": "12"}
